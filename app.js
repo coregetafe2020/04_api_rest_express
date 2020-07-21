@@ -67,7 +67,8 @@ app.put('/:_id', (req, res) => {
         proveedores[posicion].cif = req.body.cif;
     }
     res.status(200).json({
-        mensaje: 'El proveedor se actualizó correctamente'
+        mensaje: 'El proveedor se actualizó correctamente',
+        proveedores: proveedores
     })
 })
 
