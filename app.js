@@ -34,7 +34,7 @@ app.get('/:p_id', (req, res) => {
         return prov._id == req.params.p_id;
     })
     if (proveedor === undefined) {
-        res.status(200).json({mensaje: 'No se encontró el proveedor'});
+        return res.status(200).json({mensaje: 'No se encontró el proveedor'});
     }
     res.status(200).json(proveedor);
 }) 
@@ -57,6 +57,9 @@ app.put('/:_id', (req, res) => {
     let posicion = proveedores.findIndex(proveedor => {
         return proveedor._id == req.params._id;
     })
+    if (posicion < 0) {
+        return res.status(200).json({mensaje: 'El proveedor no existe'});
+    } 
     if (req.body.nombre !== undefined) {
         proveedores[posicion].nombre = req.body.nombre;
     }
@@ -68,11 +71,22 @@ app.put('/:_id', (req, res) => {
     }
     res.status(200).json({
         mensaje: 'El proveedor se actualizó correctamente',
-        proveedores: proveedores
+        proveedor: proveedores[posicion]
     })
 })
 
+// Delete para eliminar registros
 
+app.delete('/:_id', (req, res) => {
+    let posicion = proveedores.findIndex(proveedor => {
+        return proveedor._id == req.params._id;
+    })
+    proveedores.splice(posicion, 1);
+    res.status(200).json({
+        mensaje: 'El proveedor se ha eliminado correctamente',
+        proveedores: proveedores
+    })
+})
 
 app.listen(3000, () => {
     console.log('Servidor escuchando en http://localhost:3000');
